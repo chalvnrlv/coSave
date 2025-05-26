@@ -1,0 +1,244 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: 
+        url(../images/bgreg.jpg) center/cover;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    background: white;
+    border-radius: 55px;
+    width: 642px;
+    padding: 40px;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.1);
+}
+
+.login-title {
+    font-size: 50px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.login-switch {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.signup-link {
+    color: #A55D35;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.form-main {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: black;
+}
+
+.input-field {
+    background: #E2E8F0;
+    border-radius: 7px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.input-field input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    padding: 0 10px;
+}
+
+.show-password {
+    background: none;
+    border: none;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px 10px;
+    position: absolute;
+    right: 15px;
+    transition: color 0.3s ease;
+}
+
+.show-password:hover {
+    color: #75A7EA;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -10px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.remember-me input {
+    width: 18px;
+    height: 18px;
+    border: 1px solid black;
+}
+
+.forgot-password {
+    color: black;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.login-btn {
+    width: 100%;
+    height: 55px;
+    background: #75A7EA;
+    border: none;
+    border-radius: 7px;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+    background: #5d8bc7;
+}
+
+.separator {
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.separator span {
+    background: white;
+    padding: 0 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.separator::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #D9D9D9;
+    transform: translateY(-50%);
+}
+
+.social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.social-btn {
+    width: 100%;
+    height: 55px;
+    border: 1px solid black;
+    border-radius: 7px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+    background: #f5f5f5;
+}
+
+.social-btn .icon {
+    width: 24px;
+    height: 24px;
+    background: currentColor;
+}
+
+.apple .icon {
+    -webkit-mask: url(/assets/images/apple-icon.png) no-repeat center;
+    mask: url(/assets/images/apple-icon.png) no-repeat center;
+}
+
+.google .icon {
+    -webkit-mask: url(/assets/images/google-icon.png) no-repeat center;
+    mask: url(/assets/images/google-icon.png) no-repeat center;
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        width: 90%;
+        border-radius: 30px;
+        padding: 30px;
+    }
+    
+    .login-title {
+        font-size: 40px;
+    }
+    
+    .social-btn {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 20px;
+    }
+    
+    .login-title {
+        font-size: 32px;
+    }
+    
+    .login-switch {
+        font-size: 14px;
+    }
+    
+    .input-field {
+        height: 50px;
+    }
+    
+    .login-btn {
+        height: 50px;
+        font-size: 16px;
+    }
+    
+    .social-btn {
+        height: 50px;
+        font-size: 14px;
+    }
+}
