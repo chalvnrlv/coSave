@@ -1,0 +1,140 @@
+
+    .coinfo-container {
+        padding: 100px 100px 60px;
+        background: #F1F5F9;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    .section-heading {
+        font: 700 50px Poppins;
+        letter-spacing: 0.5px;
+        margin-bottom: 40px;
+    }
+
+    .text-black { color: black; }
+    .text-white { color: white; }
+
+    .content-section {
+        width: 100%;
+        padding: 40px 0;
+    }
+
+    /* Finance Definition Section */
+    .finance-definition {
+        margin-bottom: 80px;
+        padding: 0 20px;
+    }
+
+    /* Importance Section */
+    .importance-section {
+        background: #A55D35;
+        padding: 80px 10% 80px 20%;
+        margin: 100px 0;
+        position: relative;
+        width: 100vw;
+    }
+
+    /* Tips Section */
+    .tips-section {
+        display: flex;
+        gap: 60px;
+        margin-top: 80px;
+        padding: 0 20px;
+    }
+
+    .tips-content {
+        flex: 1;
+        min-width: 50%;
+    }
+
+    .tips-image {
+        flex: 1;
+        min-width: 50%;
+        margin-right: -10%;
+    }
+
+    .tips-image img {
+        width: 100%;
+        height: auto;
+        max-width: 1000px;
+        display: block;
+    }
+
+    .body-text {
+        font: 700 26px Poppins;
+        line-height: 46.8px;
+        margin: 30px 0;
+    }
+
+    .cta-button {
+        display: inline-block;
+        padding: 20px 40px;
+        border: 2px solid #1A1818;
+        border-radius: 50px;
+        font: 700 24px Poppins;
+        line-height: 24px;
+        letter-spacing: 0.5px;
+        color: #090808;
+        text-decoration: none;
+        margin: 20px 10px 0 0;
+        transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+        background: #091F46;
+        color: white;
+        border-color: #091F46;
+    }
+
+    @media (max-width: 1200px) {
+        .importance-section {
+            right: 0;
+            padding: 60px 15%;
+            width: 100%;
+        }
+        
+        .tips-image {
+            margin-right: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .section-heading {
+            font-size: 40px;
+            line-height: 1.2;
+        }
+        
+        .importance-section {
+            padding: 40px 20px;
+            margin: 60px 0;
+            width: 100%;
+            right: 0;
+        }
+        
+        .tips-section {
+            flex-direction: column;
+            gap: 40px;
+        }
+        
+        .body-text {
+            font-size: 22px;
+            line-height: 40px;
+        }
+        
+        .cta-button {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .section-heading {
+            font-size: 32px;
+        }
+        
+        .body-text {
+            font-size: 20px;
+            line-height: 36px;
+        }
+    }
