@@ -5,16 +5,453 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>coBudget - CoSave</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/coinfo.css"> <link rel="stylesheet" href="../../assets/css/cotrack.css"> <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for coBudget */
+        .cobudget-container {
+            padding: 120px 20px 60px;
+            background: #F1F5F9;
+            min-height: 100vh;
+        }
+
+        .cobudget-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .cobudget-title {
+            font: 800 50px Poppins;
+            margin-bottom: 20px;
+        }
+
+        .cobudget-description {
+            font: 400 22px Poppins;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .budget-main-content {
+            display: flex;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .budget-form-section {
+            flex: 2;
+            min-width: 300px; /* Ensure it doesn't shrink too much */
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .budget-form-section h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #091F46;
+        }
+
+        .budget-input-group {
+            margin-bottom: 25px;
+        }
+
+        .budget-input-group label {
+            display: block;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .budget-input-field {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font: 500 18px Poppins;
+            border: 2px solid #091F46;
+            background: white;
+            color: #091F46;
+        }
+
+        .budget-submit-button {
+            background: #A55D35;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font: 700 20px Poppins;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        .budget-submit-button:hover {
+            background: #8a4d2d;
+        }
+
+        .budget-summary-section {
+            flex: 1;
+            min-width: 300px; /* Ensure it doesn't shrink too much */
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .budget-summary-section h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #091F46;
+        }
+
+        .summary-item {
+            margin-bottom: 20px;
+        }
+
+        .summary-label {
+            color: #091F46;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .summary-value {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .summary-value.income { color: #4CAF50; }
+        .summary-value.expense { color: #F44336; }
+        .summary-value.balance { color: #A55D35; }
+
+        .budget-categories-section {
+            width: 100%;
+            margin-top: 60px;
+            padding: 0 20px;
+        }
+
+        .budget-categories-section h3 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #091F46;
+            text-align: center;
+        }
+
+        .category-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .category-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 8px solid #091F46; /* Default border */
+        }
+
+        .category-card.exceeded {
+            border-left-color: #F44336; /* Red for exceeded budget */
+        }
+        .category-card.within {
+            border-left-color: #4CAF50; /* Green for within budget */
+        }
+
+
+        .category-card h4 {
+            font-size: 24px;
+            color: #091F46;
+            margin-bottom: 10px;
+        }
+
+        .category-amounts {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .category-amounts .budget-amount {
+            font-weight: 700;
+            color: #A55D35;
+        }
+
+        .category-amounts .spent-amount {
+            font-weight: 600;
+            color: #F44336;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 15px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #4CAF50; /* Green for progress */
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+        }
+        .progress-bar.exceeded {
+            background-color: #F44336; /* Red for exceeded */
+        }
+
+        .progress-text {
+            font-size: 14px;
+            text-align: right;
+            margin-top: 5px;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .budget-main-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+            .budget-form-section,
+            .budget-summary-section {
+                width: 100%;
+                min-width: unset;
+                padding: 30px;
+            }
+            .budget-summary-section {
+                order: -1; /* Move summary to top on mobile */
+            }
+            .cobudget-title {
+                font-size: 40px;
+            }
+            .cobudget-description {
+                font-size: 18px;
+            }
+            .budget-form-section h2,
+            .budget-summary-section h2,
+            .budget-categories-section h3 {
+                font-size: 28px;
+            }
+            .budget-input-field {
+                font-size: 16px;
+                padding: 12px 20px;
+            }
+            .budget-submit-button {
+                font-size: 18px;
+                padding: 12px 25px;
+            }
+            .summary-value {
+                font-size: 30px;
+            }
+            .category-card h4 {
+                font-size: 20px;
+            }
+            .category-amounts {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="header"></div>
     
-    <main>
-        <h1>coBudget Page</h1>
+    <main class="cobudget-container">
+        <div class="cobudget-header">
+            <h1 class="cobudget-title">
+                <span class="text-black">co</span>
+                <span style="color: #A55D35;">Budget</span>
+            </h1>
+            <p class="cobudget-description">
+                Atur anggaran Anda dengan mudah dan pantau pengeluaran Anda agar tetap sesuai rencana. Capai tujuan finansial Anda dengan coBudget!
+            </p>
+        </div>
+
+        <div class="budget-main-content">
+            <div class="budget-form-section">
+                <h2>Tetapkan Anggaran Baru</h2>
+                <div class="budget-input-group">
+                    <label for="budgetName">Nama Kategori Anggaran</label>
+                    <input type="text" id="budgetName" class="budget-input-field" placeholder="Ex: Makanan, Transportasi, Hiburan" required>
+                </div>
+                <div class="budget-input-group">
+                    <label for="budgetAmount">Jumlah Anggaran (Rp)</label>
+                    <input type="number" id="budgetAmount" class="budget-input-field" placeholder="Ex: 500000" required>
+                </div>
+                <button class="budget-submit-button" onclick="addBudgetCategory()">Tambahkan Anggaran</button>
+            </div>
+
+            <div class="budget-summary-section">
+                <h2>Ringkasan Anggaran Anda</h2>
+                <div class="summary-item">
+                    <div class="summary-label">Total Pemasukan Bulan Ini</div>
+                    <div class="summary-value income" id="totalIncomeSummary">Rp 0</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Total Anggaran Ditetapkan</div>
+                    <div class="summary-value expense" id="totalBudgetSet">Rp 0</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Sisa Anggaran</div>
+                    <div class="summary-value balance" id="remainingBudget">Rp 0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="budget-categories-section">
+            <h3>Progress Anggaran per Kategori</h3>
+            <div class="category-list" id="budgetCategoryList">
+                </div>
+        </div>
     </main>
 
     <div id="footer"></div>
     
     <script src="../../assets/js/main.js"></script>
+    <script>
+        let budgetCategories = [];
+        // Mock data for income and expenses for demonstration
+        let mockTotalIncome = 5000000; // Example total income
+        let mockExpenses = [
+            { category: 'Food', amount: 300000 },
+            { category: 'Transport', amount: 150000 },
+            { category: 'Housing', amount: 1000000 }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial update of summary and categories
+            updateBudgetSummary();
+            renderBudgetCategories();
+        });
+
+        function addBudgetCategory() {
+            const name = document.getElementById('budgetName').value;
+            const amount = parseFloat(document.getElementById('budgetAmount').value);
+
+            if (!name || isNaN(amount) || amount <= 0) {
+                // Using a custom message box instead of alert()
+                showMessageBox('Harap masukkan nama kategori dan jumlah anggaran yang valid.', 'error');
+                return;
+            }
+
+            budgetCategories.push({
+                name: name,
+                budget: amount,
+                spent: 0 // Initialize spent amount to 0
+            });
+
+            document.getElementById('budgetName').value = '';
+            document.getElementById('budgetAmount').value = '';
+
+            updateBudgetSummary();
+            renderBudgetCategories();
+            showMessageBox('Anggaran kategori berhasil ditambahkan!', 'success');
+        }
+
+        function updateBudgetSummary() {
+            let totalBudget = budgetCategories.reduce((sum, cat) => sum + cat.budget, 0);
+            let totalSpent = mockExpenses.reduce((sum, exp) => sum + exp.amount, 0); // Sum of mock expenses
+
+            // Update spent amount for each category based on mock expenses
+            budgetCategories.forEach(category => {
+                const matchingExpense = mockExpenses.find(exp => exp.category.toLowerCase() === category.name.toLowerCase());
+                if (matchingExpense) {
+                    category.spent = matchingExpense.amount;
+                }
+            });
+
+            let remaining = mockTotalIncome - totalSpent; // Simplified remaining calculation
+
+            document.getElementById('totalIncomeSummary').textContent = `Rp ${formatNumber(mockTotalIncome)}`;
+            document.getElementById('totalBudgetSet').textContent = `Rp ${formatNumber(totalBudget)}`;
+            document.getElementById('remainingBudget').textContent = `Rp ${formatNumber(remaining)}`;
+        }
+
+        function renderBudgetCategories() {
+            const categoryListDiv = document.getElementById('budgetCategoryList');
+            categoryListDiv.innerHTML = ''; // Clear existing list
+
+            if (budgetCategories.length === 0) {
+                categoryListDiv.innerHTML = '<p style="text-align: center; color: #555;">Belum ada anggaran yang ditetapkan. Tambahkan anggaran Anda!</p>';
+                return;
+            }
+
+            budgetCategories.forEach(category => {
+                const percentageSpent = (category.spent / category.budget) * 100;
+                const isExceeded = percentageSpent > 100;
+                const progressBarWidth = Math.min(percentageSpent, 100); // Cap progress bar at 100% visually
+
+                const cardClass = isExceeded ? 'category-card exceeded' : 'category-card within';
+                const progressBarClass = isExceeded ? 'progress-bar exceeded' : 'progress-bar';
+
+                const categoryCard = `
+                    <div class="${cardClass}">
+                        <h4>${category.name}</h4>
+                        <div class="category-amounts">
+                            <div>Anggaran: <span class="budget-amount">Rp ${formatNumber(category.budget)}</span></div>
+                            <div>Terpakai: <span class="spent-amount">Rp ${formatNumber(category.spent)}</span></div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="${progressBarClass}" style="width: ${progressBarWidth}%;"></div>
+                        </div>
+                        <div class="progress-text">${percentageSpent.toFixed(1)}% Terpakai</div>
+                    </div>
+                `;
+                categoryListDiv.innerHTML += categoryCard;
+            });
+        }
+
+        function formatNumber(num) {
+            return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        // Custom message box function (instead of alert)
+        function showMessageBox(message, type) {
+            const messageBox = document.createElement('div');
+            messageBox.classList.add('message-box');
+            messageBox.textContent = message;
+
+            // Basic styling for the message box
+            messageBox.style.position = 'fixed';
+            messageBox.style.top = '20px';
+            messageBox.style.left = '50%';
+            messageBox.style.transform = 'translateX(-50%)';
+            messageBox.style.padding = '15px 30px';
+            messageBox.style.borderRadius = '8px';
+            messageBox.style.zIndex = '10000';
+            messageBox.style.color = 'white';
+            messageBox.style.fontWeight = 'bold';
+            messageBox.style.boxShadow = '0 4px 10px rgba(0,0,0,0.2)';
+            messageBox.style.opacity = '0';
+            messageBox.style.transition = 'opacity 0.5s ease-in-out';
+
+            if (type === 'success') {
+                messageBox.style.backgroundColor = '#4CAF50';
+            } else if (type === 'error') {
+                messageBox.style.backgroundColor = '#F44336';
+            } else {
+                messageBox.style.backgroundColor = '#091F46';
+            }
+
+            document.body.appendChild(messageBox);
+
+            // Animate in
+            setTimeout(() => {
+                messageBox.style.opacity = '1';
+            }, 100);
+
+            // Animate out and remove
+            setTimeout(() => {
+                messageBox.style.opacity = '0';
+                messageBox.addEventListener('transitionend', () => messageBox.remove());
+            }, 3000);
+        }
+    </script>
 </body>
 </html>

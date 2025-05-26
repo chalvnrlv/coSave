@@ -5,16 +5,220 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>coSurvive - CoSave</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/coinfo.css"> <link rel="stylesheet" href="../../assets/css/cotrack.css"> <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for coSurvive */
+        .cosurvive-container {
+            padding: 120px 20px 60px;
+            background: #F1F5F9;
+            min-height: 100vh;
+        }
+
+        .cosurvive-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .cosurvive-title {
+            font: 800 50px Poppins;
+            margin-bottom: 20px;
+        }
+
+        .cosurvive-description {
+            font: 400 22px Poppins;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .survive-prediction-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .top-expenses-card {
+            background: #D9D9D9;
+            border-radius: 50px;
+            padding: 40px 60px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 600px; /* Adjust as per reference */
+        }
+
+        .top-expenses-card h2 {
+            font-size: 50px;
+            font-weight: 800;
+            color: black;
+            margin-bottom: 30px;
+        }
+
+        .top-expenses-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 25px;
+            font-weight: 400;
+            color: black;
+            line-height: 2; /* Adjust line height for readability */
+        }
+
+        .minimum-amount-display {
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .minimum-amount-display .label {
+            font-size: 25px;
+            font-weight: 700;
+            color: #091F46;
+            margin-bottom: 15px;
+        }
+
+        .minimum-amount-display .amount {
+            font-size: 50px;
+            font-weight: 700;
+            color: #A55D35;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .cosurvive-title {
+                font-size: 40px;
+            }
+            .cosurvive-description {
+                font-size: 18px;
+            }
+            .top-expenses-card {
+                padding: 30px 40px;
+                border-radius: 30px;
+            }
+            .top-expenses-card h2 {
+                font-size: 36px;
+            }
+            .top-expenses-list {
+                font-size: 20px;
+            }
+            .minimum-amount-display .label {
+                font-size: 20px;
+            }
+            .minimum-amount-display .amount {
+                font-size: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cosurvive-title {
+                font-size: 32px;
+            }
+            .top-expenses-card h2 {
+                font-size: 28px;
+            }
+            .top-expenses-list {
+                font-size: 18px;
+            }
+            .minimum-amount-display .label {
+                font-size: 18px;
+            }
+            .minimum-amount-display .amount {
+                font-size: 32px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="header"></div>
     
-    <main>
-        <h1>coSurvive Page</h1>
+    <main class="cosurvive-container">
+        <div class="cosurvive-header">
+            <h1 class="cosurvive-title">
+                <span class="text-black">co</span>
+                <span style="color: #A55D35;">Survive</span>
+            </h1>
+            <p class="cosurvive-description">
+                coSurvive membantu Anda memprediksi kebutuhan finansial minimum untuk bertahan hidup setiap bulan, berdasarkan pola pengeluaran Anda.
+            </p>
+        </div>
+
+        <section class="finance-definition">
+            <h2 class="section-heading text-black">Apa itu coSurvive?</h2>
+            <p class="body-text text-black">
+                coSurvive adalah fitur premium yang menganalisis data pengeluaran Anda selama satu bulan penuh untuk memprediksi jumlah uang minimum yang Anda butuhkan untuk memenuhi kebutuhan dasar di bulan berikutnya. Ini adalah alat penting untuk perencanaan keuangan darurat.
+            </p>
+        </section>
+
+        <section class="importance-section">
+            <h2 class="section-heading text-white">Bagaimana coSurvive Membantu Anda?</h2>
+            <p class="body-text text-white">
+                Dengan coSurvive, Anda mendapatkan gambaran jelas tentang "garis aman" finansial Anda. Fitur ini membantu Anda menghindari kekurangan dana, mempersiapkan diri untuk skenario terburuk, dan memastikan Anda selalu memiliki cukup uang untuk kebutuhan esensial.
+            </p>
+            <div class="cta-group" style="text-align: center; margin-top: 40px;">
+                <a href="#" class="cta-button" style="background: white; color: #A55D35; border-color: white;">Pelajari Lebih Lanjut tentang Premium</a>
+            </div>
+        </section>
+
+        <section class="survive-prediction-section">
+            <div class="top-expenses-card">
+                <h2>Kategori Pengeluaran Teratas Anda</h2>
+                <ul class="top-expenses-list" id="topExpensesList">
+                    </ul>
+            </div>
+
+            <div class="minimum-amount-display">
+                <div class="label">Untuk bertahan bulan ini, Anda perlu setidaknya</div>
+                <div class="amount" id="predictedMinimumAmount">Rp 0</div>
+            </div>
+        </section>
     </main>
 
     <div id="footer"></div>
     
     <script src="../../assets/js/main.js"></script>
+    <script>
+        // Mock data for coSurvive prediction
+        const mockTopExpenses = [
+            'Makanan dan Minuman',
+            'Transportasi',
+            'Akomodasi',
+            'Komunikasi',
+            'Kesehatan'
+        ];
+        const mockPredictedAmount = 1250000; // Example predicted minimum amount
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTopExpenses();
+            displayPredictedAmount();
+        });
+
+        function renderTopExpenses() {
+            const topExpensesList = document.getElementById('topExpensesList');
+            topExpensesList.innerHTML = ''; // Clear existing list
+
+            if (mockTopExpenses.length === 0) {
+                topExpensesList.innerHTML = '<li>Tidak ada data pengeluaran teratas yang tersedia.</li>';
+                return;
+            }
+
+            mockTopExpenses.forEach(expense => {
+                const listItem = `<li>${expense}</li>`;
+                topExpensesList.innerHTML += listItem;
+            });
+        }
+
+        function displayPredictedAmount() {
+            const predictedAmountDiv = document.getElementById('predictedMinimumAmount');
+            predictedAmountDiv.textContent = `Rp ${formatNumber(mockPredictedAmount)}`;
+        }
+
+        function formatNumber(num) {
+            return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+    </script>
 </body>
 </html>
