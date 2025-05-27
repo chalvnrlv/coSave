@@ -17,17 +17,17 @@
                 <a href="login.html" class="signup-link">Log In</a>
             </div>
 
-            <form class="form-main" action="../index.html" method="get"> <div class="input-group">
+            <form class="form-main" id="signupForm"> <div class="input-group">
                     <label>Email address</label>
                     <div class="input-field">
-                        <input type="email" required>
+                        <input type="email" id="signupEmail" required>
                     </div>
                 </div>
 
                 <div class="input-group">
                     <label>Password</label>
                     <div class="input-field">
-                        <input type="password" id="password" required>
+                        <input type="password" id="signupPassword" required>
                         <button type="button" class="show-password" id="showPassword">show</button>
                     </div>
                 </div>
@@ -63,9 +63,10 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const passwordInput = document.getElementById('password');
+        const passwordInput = document.getElementById('signupPassword'); // Changed ID to avoid conflict
         const showPasswordBtn = document.getElementById('showPassword');
-    
+        const signupForm = document.getElementById('signupForm');
+
         showPasswordBtn.addEventListener('click', function() {
             if(passwordInput.type === 'password') {
                 passwordInput.type = 'text';
@@ -74,6 +75,21 @@
                 passwordInput.type = 'password';
                 showPasswordBtn.textContent = 'show';
             }
+        });
+
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Simulasi
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            // Simulate successful registration and set login state
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', email); // Store user email for display if needed
+
+            // Redirect to index.html
+            window.location.href = '../index.html';
         });
     });
 </script>
