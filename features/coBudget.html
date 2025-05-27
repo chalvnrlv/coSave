@@ -6,7 +6,7 @@
     <title>coBudget - CoSave</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/coinfo.css"> <link rel="stylesheet" href="../../assets/css/cotrack.css"> <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
-    <style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <style>
         /* Custom styles for coBudget */
         .cobudget-container {
             padding: 120px 20px 60px;
@@ -40,58 +40,7 @@
             flex-wrap: wrap; /* Allow wrapping on smaller screens */
         }
 
-        .budget-form-section {
-            flex: 2;
-            min-width: 300px; /* Ensure it doesn't shrink too much */
-            background: white;
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-
-        .budget-form-section h2 {
-            font-size: 32px;
-            margin-bottom: 30px;
-            color: #091F46;
-        }
-
-        .budget-input-group {
-            margin-bottom: 25px;
-        }
-
-        .budget-input-group label {
-            display: block;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .budget-input-field {
-            width: 100%;
-            padding: 15px 25px;
-            border-radius: 50px;
-            font: 500 18px Poppins;
-            border: 2px solid #091F46;
-            background: white;
-            color: #091F46;
-        }
-
-        .budget-submit-button {
-            background: #A55D35;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font: 700 20px Poppins;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.3s ease;
-        }
-
-        .budget-submit-button:hover {
-            background: #8a4d2d;
-        }
+        /* Removed budget-form-section as per request */
 
         .budget-summary-section {
             flex: 1;
@@ -155,6 +104,18 @@
             border-radius: 15px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             border-left: 8px solid #091F46; /* Default border */
+            cursor: pointer; /* Make cards clickable */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        .category-card.selected {
+            border: 3px solid #A55D35; /* Highlight selected card */
+            box-shadow: 0 0 0 5px rgba(165, 93, 53, 0.3);
         }
 
         .category-card.exceeded {
@@ -214,47 +175,92 @@
             color: #555;
         }
 
+        /* New styles for budget details section */
+        .budget-details-section {
+            background: #3C3A38; /* Dark background as per reference */
+            border-radius: 50px;
+            padding: 40px;
+            margin: 60px auto;
+            max-width: 800px; /* Adjust width as per reference */
+            color: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .budget-details-section h2 {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .chart-container {
+            width: 250px; /* Size of the pie chart */
+            height: 250px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .chart-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            font-weight: 700;
+            color: white;
+            z-index: 1;
+        }
+
+        .budget-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        .budget-info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .budget-info-item .label {
+            font-size: 16px;
+            color: #E2E8F0;
+            margin-bottom: 5px;
+        }
+
+        .budget-info-item .value {
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+        }
+
         @media (max-width: 768px) {
-            .budget-main-content {
-                flex-direction: column;
-                gap: 30px;
-            }
-            .budget-form-section,
-            .budget-summary-section {
-                width: 100%;
-                min-width: unset;
+            .budget-details-section {
                 padding: 30px;
+                border-radius: 30px;
             }
-            .budget-summary-section {
-                order: -1; /* Move summary to top on mobile */
+            .budget-details-section h2 {
+                font-size: 32px;
             }
-            .cobudget-title {
-                font-size: 40px;
+            .chart-container {
+                width: 200px;
+                height: 200px;
             }
-            .cobudget-description {
-                font-size: 18px;
-            }
-            .budget-form-section h2,
-            .budget-summary-section h2,
-            .budget-categories-section h3 {
-                font-size: 28px;
-            }
-            .budget-input-field {
-                font-size: 16px;
-                padding: 12px 20px;
-            }
-            .budget-submit-button {
-                font-size: 18px;
-                padding: 12px 25px;
-            }
-            .summary-value {
+            .chart-percentage {
                 font-size: 30px;
             }
-            .category-card h4 {
-                font-size: 20px;
+            .budget-info-grid {
+                grid-template-columns: 1fr; /* Stack on mobile */
             }
-            .category-amounts {
-                font-size: 16px;
+            .budget-info-item .value {
+                font-size: 20px;
             }
         }
     </style>
@@ -269,12 +275,12 @@
                 <span style="color: #A55D35;">Budget</span>
             </h1>
             <p class="cobudget-description">
-                Atur anggaran Anda dengan mudah dan pantau pengeluaran Anda agar tetap sesuai rencana. Capai tujuan finansial Anda dengan coBudget!
+                Atur anggaran Anda dengan mudah dan pantau pengeluaran Anda agar tetap sesuai rencana.
             </p>
         </div>
 
         <div class="budget-main-content">
-            <div class="budget-form-section">
+            <!-- <div class="budget-form-section">
                 <h2>Tetapkan Anggaran Baru</h2>
                 <div class="budget-input-group">
                     <label for="budgetName">Nama Kategori Anggaran</label>
@@ -285,7 +291,7 @@
                     <input type="number" id="budgetAmount" class="budget-input-field" placeholder="Ex: 500000" required>
                 </div>
                 <button class="budget-submit-button" onclick="addBudgetCategory()">Tambahkan Anggaran</button>
-            </div>
+            </div> -->
 
             <div class="budget-summary-section">
                 <h2>Ringkasan Anggaran Anda</h2>
@@ -304,6 +310,32 @@
             </div>
         </div>
 
+        <section class="budget-details-section" id="budgetDetailsSection">
+            <h2 id="detailCategoryName"></h2>
+            <div class="chart-container">
+                <canvas id="categoryPieChart"></canvas>
+                <div class="chart-percentage" id="chartPercentage">0%</div>
+            </div>
+            <div class="budget-info-grid">
+                <div class="budget-info-item">
+                    <span class="label">Target Anggaran</span>
+                    <span class="value" id="detailBudgetAmount">Rp 0</span>
+                </div>
+                <div class="budget-info-item">
+                    <span class="label">Terpakai Sejauh Ini</span>
+                    <span class="value" id="detailSpentAmount">Rp 0</span>
+                </div>
+                <div class="budget-info-item">
+                    <span class="label">Sisa Anggaran</span>
+                    <span class="value" id="detailRemainingAmount">Rp 0</span>
+                </div>
+                <div class="budget-info-item">
+                    <span class="label">Status</span>
+                    <span class="value" id="detailStatus"></span>
+                </div>
+            </div>
+        </section>
+
         <div class="budget-categories-section">
             <h3>Progress Anggaran per Kategori</h3>
             <div class="category-list" id="budgetCategoryList">
@@ -316,57 +348,37 @@
     <script src="../../assets/js/main.js"></script>
     <script>
         let budgetCategories = [];
-        // Mock data for income and expenses for demonstration
+        let categoryPieChartInstance = null; // To store the Chart.js instance
+
+        // Dummy data for initial demonstration without input fields
         let mockTotalIncome = 5000000; // Example total income
-        let mockExpenses = [
-            { category: 'Food', amount: 300000 },
-            { category: 'Transport', amount: 150000 },
-            { category: 'Housing', amount: 1000000 }
-        ];
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Initial update of summary and categories
+            // Initialize with dummy budget categories and their spent amounts
+            budgetCategories = [
+                { name: 'Makanan dan Minuman', budget: 2000000, spent: 1500000 }, // 75% used
+                { name: 'Transportasi', budget: 1000000, spent: 750000 },       // 75% used
+                { name: 'Hiburan', budget: 500000, spent: 200000 },           // 40% used
+                { name: 'Akomodasi', budget: 1000000, spent: 1200000 }         // Exceeded budget
+            ];
+            
             updateBudgetSummary();
             renderBudgetCategories();
+
+            // Optionally, display details for the first category by default
+            if (budgetCategories.length > 0) {
+                displayCategoryDetails(budgetCategories[0].name);
+                document.querySelector(`.category-card[data-category-name="${budgetCategories[0].name}"]`).classList.add('selected');
+            }
         });
 
-        function addBudgetCategory() {
-            const name = document.getElementById('budgetName').value;
-            const amount = parseFloat(document.getElementById('budgetAmount').value);
-
-            if (!name || isNaN(amount) || amount <= 0) {
-                // Using a custom message box instead of alert()
-                showMessageBox('Harap masukkan nama kategori dan jumlah anggaran yang valid.', 'error');
-                return;
-            }
-
-            budgetCategories.push({
-                name: name,
-                budget: amount,
-                spent: 0 // Initialize spent amount to 0
-            });
-
-            document.getElementById('budgetName').value = '';
-            document.getElementById('budgetAmount').value = '';
-
-            updateBudgetSummary();
-            renderBudgetCategories();
-            showMessageBox('Anggaran kategori berhasil ditambahkan!', 'success');
-        }
+        // Removed addBudgetCategory function as input fields are removed
 
         function updateBudgetSummary() {
             let totalBudget = budgetCategories.reduce((sum, cat) => sum + cat.budget, 0);
-            let totalSpent = mockExpenses.reduce((sum, exp) => sum + exp.amount, 0); // Sum of mock expenses
+            let totalSpent = budgetCategories.reduce((sum, cat) => sum + cat.spent, 0);
 
-            // Update spent amount for each category based on mock expenses
-            budgetCategories.forEach(category => {
-                const matchingExpense = mockExpenses.find(exp => exp.category.toLowerCase() === category.name.toLowerCase());
-                if (matchingExpense) {
-                    category.spent = matchingExpense.amount;
-                }
-            });
-
-            let remaining = mockTotalIncome - totalSpent; // Simplified remaining calculation
+            let remaining = mockTotalIncome - totalSpent; 
 
             document.getElementById('totalIncomeSummary').textContent = `Rp ${formatNumber(mockTotalIncome)}`;
             document.getElementById('totalBudgetSet').textContent = `Rp ${formatNumber(totalBudget)}`;
@@ -378,7 +390,7 @@
             categoryListDiv.innerHTML = ''; // Clear existing list
 
             if (budgetCategories.length === 0) {
-                categoryListDiv.innerHTML = '<p style="text-align: center; color: #555;">Belum ada anggaran yang ditetapkan. Tambahkan anggaran Anda!</p>';
+                categoryListDiv.innerHTML = '<p style="text-align: center; color: #555;">Belum ada anggaran yang ditetapkan.</p>';
                 return;
             }
 
@@ -391,7 +403,7 @@
                 const progressBarClass = isExceeded ? 'progress-bar exceeded' : 'progress-bar';
 
                 const categoryCard = `
-                    <div class="${cardClass}">
+                    <div class="${cardClass}" data-category-name="${category.name}">
                         <h4>${category.name}</h4>
                         <div class="category-amounts">
                             <div>Anggaran: <span class="budget-amount">Rp ${formatNumber(category.budget)}</span></div>
@@ -404,6 +416,106 @@
                     </div>
                 `;
                 categoryListDiv.innerHTML += categoryCard;
+            });
+
+            // Add event listeners to newly rendered category cards
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const categoryName = this.dataset.categoryName;
+                    displayCategoryDetails(categoryName);
+
+                    // Remove 'selected' class from all cards
+                    document.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
+                    // Add 'selected' class to the clicked card
+                    this.classList.add('selected');
+                });
+            });
+        }
+
+        function displayCategoryDetails(categoryName) {
+            const selectedCategory = budgetCategories.find(cat => cat.name === categoryName);
+            const budgetDetailsSection = document.getElementById('budgetDetailsSection');
+
+            if (!selectedCategory) {
+                budgetDetailsSection.style.display = 'none';
+                return;
+            }
+
+            // Show the details section
+            budgetDetailsSection.style.display = 'flex';
+
+            // Update text content
+            document.getElementById('detailCategoryName').textContent = selectedCategory.name;
+            document.getElementById('detailBudgetAmount').textContent = `Rp ${formatNumber(selectedCategory.budget)}`;
+            document.getElementById('detailSpentAmount').textContent = `Rp ${formatNumber(selectedCategory.spent)}`;
+            
+            const remaining = selectedCategory.budget - selectedCategory.spent;
+            document.getElementById('detailRemainingAmount').textContent = `Rp ${formatNumber(remaining)}`;
+
+            const percentageSpent = (selectedCategory.spent / selectedCategory.budget) * 100;
+            document.getElementById('chartPercentage').textContent = `${percentageSpent.toFixed(1)}%`;
+
+            // Update status
+            const statusElement = document.getElementById('detailStatus');
+            if (remaining >= 0) {
+                statusElement.textContent = 'Dalam Anggaran';
+                statusElement.style.color = '#4CAF50'; // Green
+            } else {
+                statusElement.textContent = 'Melebihi Anggaran';
+                statusElement.style.color = '#F44336'; // Red
+            }
+
+            // Render/update the pie chart
+            renderPieChart(selectedCategory);
+        }
+
+        function renderPieChart(categoryData) {
+            const ctx = document.getElementById('categoryPieChart').getContext('2d');
+
+            // Destroy existing chart instance if it exists
+            if (categoryPieChartInstance) {
+                categoryPieChartInstance.destroy();
+            }
+
+            const spentPercentage = (categoryData.spent / categoryData.budget) * 100;
+            const remainingPercentage = 100 - spentPercentage;
+
+            // Adjust colors based on whether budget is exceeded
+            let spentColor = '#A55D35'; // Default spent color
+            if (spentPercentage > 100) {
+                spentColor = '#F44336'; // Red if exceeded
+            }
+
+            categoryPieChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Terpakai', 'Sisa'],
+                    datasets: [{
+                        data: [spentPercentage, Math.max(0, remainingPercentage)], // Ensure remaining is not negative for chart
+                        backgroundColor: [
+                            spentColor,
+                            '#E2E8F0'  // Remaining color (light gray)
+                        ],
+                        borderWidth: 0,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '80%', // Make it a doughnut chart
+                    plugins: {
+                        legend: {
+                            display: false // Hide legend as percentage is in center
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.raw.toFixed(1) + '%';
+                                }
+                            }
+                        }
+                    }
+                }
             });
         }
 
