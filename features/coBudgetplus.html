@@ -1,1335 +1,578 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>coBudget - CoSave</title>
-
     <link rel="stylesheet" href="../../assets/css/style.css">
-
-    <link rel="stylesheet" href="../../assets/css/coinfo.css">
-
-    <link rel="stylesheet" href="../../assets/css/cotrack.css">
-
+    <link rel="stylesheet" href="../../assets/css/coinfo.css"> 
+    <link rel="stylesheet" href="../../assets/css/cotrack.css"> 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
     <style>
-
         /* Custom styles for coBudget */
-
         .cobudget-container {
-
             padding: 120px 20px 60px;
-
             background: #F1F5F9;
-
             min-height: 100vh;
-
         }
-
-
 
         .cobudget-header {
-
             text-align: center;
-
             margin-bottom: 80px;
-
         }
-
-
 
         .cobudget-title {
-
             font: 800 50px Poppins;
-
             margin-bottom: 20px;
-
         }
-
-
 
         .cobudget-description {
-
             font: 400 22px Poppins;
-
             color: #333;
-
             max-width: 800px;
-
             margin: 0 auto;
-
             line-height: 1.6;
-
         }
-
-
 
         .budget-main-content {
-
             display: flex;
-
             gap: 40px;
-
             max-width: 1200px;
-
             margin: 0 auto;
-
             flex-wrap: wrap; /* Allow wrapping on smaller screens */
-
         }
-
-
 
         .budget-summary-section {
-
             flex: 1;
-
             min-width: 300px; /* Ensure it doesn't shrink too much */
-
             background: white;
-
             padding: 40px;
-
             border-radius: 30px;
-
             height: fit-content;
-
             position: sticky;
-
             top: 120px;
-
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-
         }
-
-
 
         .budget-summary-section h2 {
-
             font-size: 32px;
-
             margin-bottom: 30px;
-
             color: #091F46;
-
         }
-
-
 
         .summary-item {
-
             margin-bottom: 20px;
-
         }
-
-
 
         .summary-label {
-
             color: #091F46;
-
             font-size: 20px;
-
             margin-bottom: 5px;
-
         }
-
-
 
         .summary-value {
-
             font-size: 36px;
-
             font-weight: 700;
-
         }
-
-
 
         .summary-value.income { color: #4CAF50; }
-
         .summary-value.expense { color: #F44336; }
-
         .summary-value.balance { color: #A55D35; }
 
-
-
-        /* New wrapper for main content columns */
-
-        .main-columns-wrapper {
-
+        /* New wrapper for categories and details sections */
+        .budget-overview-wrapper {
             display: flex;
-
             gap: 40px;
-
-            max-width: 1200px;
-
-            margin: 60px auto 0;
-
-            flex-wrap: wrap;
-
-            align-items: flex-start;
-
+            max-width: 2000px;
+            margin: 60px auto 0; /* Adjusted margin */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            align-items: flex-start; /* Align items to the top */
         }
-
-
-
-        .left-column {
-
-            flex: 1;
-
-            min-width: 300px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 40px; /* Space between form and categories */
-
-        }
-
-
-
-        .budget-form-section {
-
-            background: white;
-
-            padding: 40px;
-
-            border-radius: 30px;
-
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-
-        }
-
-
-
-        .budget-form-section h2 {
-
-            font-size: 32px;
-
-            margin-bottom: 30px;
-
-            color: #091F46;
-
-        }
-
-
-
-        .budget-input-group {
-
-            margin-bottom: 25px;
-
-        }
-
-
-
-        .budget-input-group label {
-
-            display: block;
-
-            font-size: 18px;
-
-            font-weight: 600;
-
-            margin-bottom: 10px;
-
-            color: #333;
-
-        }
-
-
-
-        .budget-input-field {
-
-            width: 100%;
-
-            padding: 15px 25px;
-
-            border-radius: 50px;
-
-            font: 500 18px Poppins;
-
-            border: 2px solid #091F46;
-
-            background: white;
-
-            color: #091F46;
-
-        }
-
-
-
-        .budget-submit-button {
-
-            background: #A55D35;
-
-            color: white;
-
-            padding: 15px 30px;
-
-            border-radius: 50px;
-
-            font: 700 20px Poppins;
-
-            border: none;
-
-            cursor: pointer;
-
-            width: 100%;
-
-            transition: background 0.3s ease;
-
-        }
-
-
-
-        .budget-submit-button:hover {
-
-            background: #8a4d2d;
-
-        }
-
-
 
         .budget-categories-section {
-
-            width: 100%;
-
-            margin: 60px auto 0;
-
-            padding: 0 20px;
-
-            max-width: 1200px;
-
+            flex: 1; /* Take up available space */
+            min-width: 300px; /* Ensure it doesn't shrink too much */
+            padding: 0 20px; /* Keep padding */
         }
-
-
 
         .budget-categories-section h3 {
-
             font-size: 32px;
-
             margin-bottom: 30px;
-
             color: #091F46;
-
             text-align: center;
-
         }
-
-
 
         .category-list {
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 20px;
-
-            justify-content: center;
-
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
-
-
 
         .category-card {
-
             background: white;
-
             padding: 25px;
-
             border-radius: 15px;
-
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-
             border-left: 8px solid #091F46; /* Default border */
-
             cursor: pointer; /* Make cards clickable */
-
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-
-            flex: 0 1 300px;
-
-            min-width: 280px;
-
         }
-
-
 
         .category-card:hover {
-
             transform: translateY(-5px);
-
             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-
         }
-
-
 
         .category-card.selected {
-
             border: 3px solid #A55D35; /* Highlight selected card */
-
             box-shadow: 0 0 0 5px rgba(165, 93, 53, 0.3);
-
         }
-
-
 
         .category-card.exceeded {
-
             border-left-color: #F44336; /* Red for exceeded budget */
-
         }
-
         .category-card.within {
-
             border-left-color: #4CAF50; /* Green for within budget */
-
         }
-
-
-
 
 
         .category-card h4 {
-
             font-size: 24px;
-
             color: #091F46;
-
             margin-bottom: 10px;
-
         }
-
-
 
         .category-amounts {
-
             display: flex;
-
             justify-content: space-between;
-
             font-size: 18px;
-
             margin-bottom: 15px;
-
         }
-
-
 
         .category-amounts .budget-amount {
-
             font-weight: 700;
-
             color: #A55D35;
-
         }
-
-
 
         .category-amounts .spent-amount {
-
             font-weight: 600;
-
             color: #F44336;
-
         }
-
-
 
         .progress-bar-container {
-
             width: 100%;
-
             background-color: #e0e0e0;
-
             border-radius: 10px;
-
             overflow: hidden;
-
             height: 15px;
-
         }
-
-
 
         .progress-bar {
-
             height: 100%;
-
             background-color: #4CAF50; /* Green for progress */
-
             width: 0%;
-
             border-radius: 10px;
-
             transition: width 0.5s ease-in-out;
-
         }
-
         .progress-bar.exceeded {
-
             background-color: #F44336; /* Red for exceeded */
-
         }
-
-
 
         .progress-text {
-
             font-size: 14px;
-
             text-align: right;
-
             margin-top: 5px;
-
             color: #555;
-
         }
 
-
-
-        /* Styles for budget details section (right panel) */
-
+        /* Styles for budget details section */
         .budget-details-section {
-
             flex: 1; /* Take up available space */
-
             min-width: 300px; /* Ensure it doesn't shrink too much */
-
-            background: #D9D9D9; /* Light grey background as per reference */
-
+            background: #3C3A38; /* Dark background as per reference */
             border-radius: 50px;
-
             padding: 40px;
-
-            color: black; /* Text color for light background */
-
+            color: white;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-
             display: none; /* Hidden by default, shown by JS */
-
             flex-direction: column;
-
             align-items: center;
-
             gap: 20px;
-
         }
-
-
 
         .budget-details-section h2 {
-
             font-size: 40px;
-
             font-weight: 700;
-
             margin-bottom: 20px;
-
-            color: black; /* Ensure heading is black */
-
-        }
-
-       
-
-        /* Removed chart-specific styles */
-
-        .budget-details-section .detail-info-item {
-
-            width: 100%;
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: baseline;
-
-            margin-bottom: 15px;
-
-        }
-
-        .budget-details-section .detail-info-item .label {
-
-            font-size: 20px;
-
-            font-weight: 700;
-
-            color: black;
-
-        }
-
-        .budget-details-section .detail-info-item .value {
-
-            font-size: 20px;
-
-            font-weight: 500;
-
-            color: #7F8188; /* Grey color as per reference */
-
-        }
-
-        .budget-details-section .detail-info-item .value.target {
-
-            color: #7F8188; /* Grey for target */
-
-        }
-
-        .budget-details-section .detail-info-item .value.spent {
-
-            color: #7F8188; /* Grey for spent */
-
-        }
-
-        .budget-details-section .detail-info-item .value.status {
-
-            font-weight: 700;
-
-        }
-
-
-
-
-
-        /* Free Trial Section */
-
-        .free-trial-section {
-
-            text-align: center;
-
-            margin-top: 80px;
-
-            padding: 20px;
-
-        }
-
-
-
-        .free-trial-section h3 {
-
-            font-size: 25px;
-
-            font-weight: 700;
-
-            color: black;
-
-            margin-bottom: 20px;
-
-        }
-
-
-
-        .free-trial-button {
-
-            display: inline-block;
-
-            padding: 20px 40px;
-
-            border: 2px solid #1A1818;
-
-            border-radius: 50px;
-
-            font: 700 24px Poppins;
-
-            line-height: 24px;
-
-            letter-spacing: 0.5px;
-
-            color: #090808;
-
-            text-decoration: none;
-
-            transition: all 0.3s ease;
-
-            background: transparent; /* Ensure it's outline style */
-
-        }
-
-
-
-        .free-trial-button:hover {
-
-            background: #091F46;
-
             color: white;
-
-            border-color: #091F46;
-
         }
 
+        .chart-container {
+            width: 250px; /* Size of the pie chart */
+            height: 250px;
+            position: relative;
+            margin-bottom: 20px;
+        }
 
+        .chart-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            font-weight: 700;
+            color: white;
+            z-index: 1;
+        }
+
+        .budget-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        .budget-info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .budget-info-item .label {
+            font-size: 16px;
+            color: #E2E8F0;
+            margin-bottom: 5px;
+        }
+
+        .budget-info-item .value {
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+        }
 
         @media (max-width: 768px) {
-
-            .cobudget-details-section {
-
-                padding: 30px;
-
-                border-radius: 30px;
-
-            }
-
-            .cobudget-details-section h2 {
-
-                font-size: 32px;
-
-            }
-
-            /* Removed chart-specific media queries */
-
-            .budget-info-grid {
-
-                grid-template-columns: 1fr; /* Stack on mobile */
-
-            }
-
-            .budget-info-item .value {
-
-                font-size: 20px;
-
-            }
-
-            .main-columns-wrapper {
-
-                flex-direction: column; /* Stack vertically on mobile */
-
-                margin-top: 30px; /* Adjust margin */
-
-            }
-
-            .left-column {
-
-                width: 100%;
-
-            }
-
             .budget-details-section {
-
-                width: 100%;
-
-                max-width: unset; /* Remove max-width on mobile to fill container */
-
+                padding: 30px;
+                border-radius: 30px;
             }
-
-            .free-trial-button {
-
-                width: 100%;
-
-                max-width: 300px;
-
+            .budget-details-section h2 {
+                font-size: 32px;
+            }
+            .chart-container {
+                width: 200px;
+                height: 200px;
+            }
+            .chart-percentage {
+                font-size: 30px;
+            }
+            .budget-info-grid {
+                grid-template-columns: 1fr; /* Stack on mobile */
+            }
+            .budget-info-item .value {
                 font-size: 20px;
-
-                padding: 15px 30px;
-
             }
-
-            .category-list {
-
-                justify-content: center;
-
+            .budget-overview-wrapper {
+                flex-direction: column; /* Stack vertically on mobile */
+                margin-top: 30px; /* Adjust margin */
             }
-
-            .category-card {
-
-                flex: 1 1 100%;
-
-                max-width: 400px;
-
+            .budget-categories-section {
+                width: 100%;
             }
-
+            .budget-details-section {
+                width: 100%;
+                max-width: unset; /* Remove max-width on mobile to fill container */
+            }
         }
-
-
-
-        @media (max-width: 480px) {
-
-            .category-card {
-
-                min-width: unset;
-
-                flex: 1 1 100%;
-
-            }
-
-        }
-
     </style>
-
 </head>
-
 <body>
-
     <div id="header"></div>
-
+    
     <main class="cobudget-container">
-
         <div class="cobudget-header">
-
             <h1 class="cobudget-title">
-
                 <span class="text-black">co</span>
-
-                <span style="color: #A55D35;">Budget</span>
-
+                <span style="color: #A55D35;">Budget+</span>
             </h1>
-
             <p class="cobudget-description">
-
                 Atur anggaran Anda dengan mudah dan pantau pengeluaran Anda agar tetap sesuai rencana!
-
             </p>
-
         </div>
-
-
 
         <div class="budget-main-content">
-
             <div class="budget-summary-section">
-
                 <h2>Ringkasan Anggaran Anda</h2>
-
                 <div class="summary-item">
-
                     <div class="summary-label">Total Pemasukan Bulan Ini</div>
-
                     <div class="summary-value income" id="totalIncomeSummary">Rp 0</div>
-
                 </div>
-
                 <div class="summary-item">
-
                     <div class="summary-label">Total Anggaran Ditetapkan</div>
-
                     <div class="summary-value expense" id="totalBudgetSet">Rp 0</div>
-
                 </div>
-
                 <div class="summary-item">
-
                     <div class="summary-label">Sisa Anggaran</div>
-
                     <div class="summary-value balance" id="remainingBudget">Rp 0</div>
-
                 </div>
-
             </div>
-
         </div>
 
-
-
-        <div class="main-columns-wrapper">
-
-            <div class="left-column">
-
-                <div class="budget-form-section">
-
-                    <h2>Tetapkan Anggaran Baru</h2>
-
-                    <div class="budget-input-group">
-
-                        <label for="budgetName">Nama Kategori Anggaran</label>
-
-                        <input type="text" id="budgetName" class="budget-input-field" placeholder="Ex: Makanan, Transportasi, Hiburan" required>
-
+        <div class="budget-overview-wrapper">
+            <div class="budget-categories-section">
+                <h3>Progress Anggaran per Kategori</h3>
+                <div class="category-list" id="budgetCategoryList">
                     </div>
-
-                    <div class="budget-input-group">
-
-                        <label for="budgetAmount">Jumlah Anggaran (Rp)</label>
-
-                        <input type="number" id="budgetAmount" class="budget-input-field" placeholder="Ex: 500000" required>
-
-                    </div>
-
-                    <button class="budget-submit-button" onclick="addBudgetCategory()">Tambahkan Anggaran</button>
-
-                </div>
-
             </div>
-
-
 
             <section class="budget-details-section" id="budgetDetailsSection">
-
                 <h2 id="detailCategoryName"></h2>
-
-                <div class="detail-info-item">
-
-                    <span class="label">Target</span>
-
-                    <span class="value target" id="detailBudgetAmount">Rp 0</span>
-
+                <div class="chart-container">
+                    <canvas id="categoryPieChart"></canvas>
+                    <div class="chart-percentage" id="chartPercentage">0%</div>
                 </div>
-
-                <div class="detail-info-item">
-
-                    <span class="label">Terpakai Sejauh Ini</span>
-
-                    <span class="value spent" id="detailSpentAmount">Rp 0</span>
-
+                <div class="budget-info-grid">
+                    <div class="budget-info-item">
+                        <span class="label">Target Anggaran</span>
+                        <span class="value" id="detailBudgetAmount">Rp 0</span>
+                    </div>
+                    <div class="budget-info-item">
+                        <span class="label">Terpakai Sejauh Ini</span>
+                        <span class="value" id="detailSpentAmount">Rp 0</span>
+                    </div>
+                    <div class="budget-info-item">
+                        <span class="label">Sisa Anggaran</span>
+                        <span class="value" id="detailRemainingAmount">Rp 0</span>
+                    </div>
+                    <div class="budget-info-item">
+                        <span class="label">Status</span>
+                        <span class="value" id="detailStatus"></span>
+                    </div>
                 </div>
-
-                <div class="detail-info-item">
-
-                    <span class="label">Sisa Anggaran</span>
-
-                    <span class="value" id="detailRemainingAmount">Rp 0</span>
-
-                </div>
-
-                <div class="detail-info-item">
-
-                    <span class="label">Status</span>
-
-                    <span class="value status" id="detailStatus"></span>
-
-                </div>
-
             </section>
-
         </div>
-
-
-
-        <div class="budget-categories-section">
-
-            <h3>Progress Anggaran per Kategori</h3>
-
-            <div class="category-list" id="budgetCategoryList">
-
-            </div>
-
-        </div>
-
-
-
-        <section class="free-trial-section">
-
-            <h3>Want to track your budgeting?</h3>
-
-            <a href="coBudgetplus.html" class="free-trial-button" id="freeTrialButton">free trial 1 months</a>
-
-        </section>
-
     </main>
 
-
     <div id="footer"></div>
-
-   
+    
     <script src="../../assets/js/main.js"></script>
-
     <script>
-
         let budgetCategories = [];
+        let categoryPieChartInstance = null; // To store the Chart.js instance
 
-        // Removed categoryPieChartInstance as Chart.js is no longer used for this page
-
-
-
-        // Dummy data for initial demonstration
-
+        // Dummy data for initial demonstration without input fields
         let mockTotalIncome = 5000000; // Example total income
 
-
-
         document.addEventListener('DOMContentLoaded', function() {
-
             // Initialize with dummy budget categories and their spent amounts
-
             budgetCategories = [
-
                 { name: 'Makanan dan Minuman', budget: 2000000, spent: 1500000 }, // 75% used
-
                 { name: 'Transportasi', budget: 1000000, spent: 750000 },       // 75% used
-
                 { name: 'Hiburan', budget: 500000, spent: 200000 },           // 40% used
-
                 { name: 'Akomodasi', budget: 1000000, spent: 1200000 }         // Exceeded budget
-
             ];
-
-           
-
+            
             updateBudgetSummary();
-
             renderBudgetCategories();
 
-
-
-            // Display details for the first category by default
-
+            // Optionally, display details for the first category by default
             if (budgetCategories.length > 0) {
-
                 displayCategoryDetails(budgetCategories[0].name);
-
                 document.querySelector(`.category-card[data-category-name="${budgetCategories[0].name}"]`).classList.add('selected');
-
             }
-
-
-
-            // Add event listener for the Free Trial button
-
-            document.getElementById('freeTrialButton').addEventListener('click', function(e) {
-
-                e.preventDefault(); // Prevent default link behavior
-
-                // Store budgetCategories in localStorage before redirecting
-
-                localStorage.setItem('budgetCategoriesData', JSON.stringify(budgetCategories));
-
-                window.location.href = 'coBudgetplus.html'; // Redirect to coBudgetplus.html
-
-            });
-
         });
 
-
-
-        function addBudgetCategory() {
-
-            const name = document.getElementById('budgetName').value.trim();
-
-            const amount = parseFloat(document.getElementById('budgetAmount').value);
-
-
-
-            if (!name || isNaN(amount) || amount <= 0) {
-
-                showMessageBox('Harap masukkan nama kategori dan jumlah anggaran yang valid.', 'error');
-
-                return;
-
-            }
-
-
-
-            // Check if category already exists
-
-            const existingCategory = budgetCategories.find(cat => cat.name.toLowerCase() === name.toLowerCase());
-
-            if (existingCategory) {
-
-                showMessageBox('Kategori anggaran ini sudah ada.', 'error');
-
-                return;
-
-            }
-
-
-
-            budgetCategories.push({
-
-                name: name,
-
-                budget: amount,
-
-                spent: 0 // New categories start with 0 spent
-
-            });
-
-
-
-            document.getElementById('budgetName').value = '';
-
-            document.getElementById('budgetAmount').value = '';
-
-
-
-            updateBudgetSummary();
-
-            renderBudgetCategories();
-
-            showMessageBox('Anggaran kategori berhasil ditambahkan!', 'success');
-
-        }
-
-
-
         function updateBudgetSummary() {
-
             let totalBudget = budgetCategories.reduce((sum, cat) => sum + cat.budget, 0);
-
             let totalSpent = budgetCategories.reduce((sum, cat) => sum + cat.spent, 0);
 
-
-
-            let remaining = mockTotalIncome - totalSpent;
-
-
+            let remaining = mockTotalIncome - totalSpent; 
 
             document.getElementById('totalIncomeSummary').textContent = `Rp ${formatNumber(mockTotalIncome)}`;
-
             document.getElementById('totalBudgetSet').textContent = `Rp ${formatNumber(totalBudget)}`;
-
             document.getElementById('remainingBudget').textContent = `Rp ${formatNumber(remaining)}`;
-
         }
-
-
 
         function renderBudgetCategories() {
-
             const categoryListDiv = document.getElementById('budgetCategoryList');
-
             categoryListDiv.innerHTML = ''; // Clear existing list
 
-
-
             if (budgetCategories.length === 0) {
-
                 categoryListDiv.innerHTML = '<p style="text-align: center; color: #555;">Belum ada anggaran yang ditetapkan.</p>';
-
                 return;
-
             }
-
-
 
             budgetCategories.forEach(category => {
-
                 const percentageSpent = (category.spent / category.budget) * 100;
-
                 const isExceeded = percentageSpent > 100;
-
                 const progressBarWidth = Math.min(percentageSpent, 100); // Cap progress bar at 100% visually
 
-
-
                 const cardClass = isExceeded ? 'category-card exceeded' : 'category-card within';
-
                 const progressBarClass = isExceeded ? 'progress-bar exceeded' : 'progress-bar';
 
-
-
-                const categoryCard = document.createElement('div');
-
-                categoryCard.className = cardClass;
-
-                categoryCard.setAttribute('data-category-name', category.name);
-
-                categoryCard.innerHTML = `
-
-                    <h4>${category.name}</h4>
-
-                    <div class="category-amounts">
-
-                        <div>Anggaran: <span class="budget-amount">Rp ${formatNumber(category.budget)}</span></div>
-
-                        <div>Terpakai: <span class="spent-amount">Rp ${formatNumber(category.spent)}</span></div>
-
+                const categoryCard = `
+                    <div class="${cardClass}" data-category-name="${category.name}">
+                        <h4>${category.name}</h4>
+                        <div class="category-amounts">
+                            <div>Anggaran: <span class="budget-amount">Rp ${formatNumber(category.budget)}</span></div>
+                            <div>Terpakai: <span class="spent-amount">Rp ${formatNumber(category.spent)}</span></div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="${progressBarClass}" style="width: ${progressBarWidth}%;"></div>
+                        </div>
+                        <div class="progress-text">${percentageSpent.toFixed(1)}% Terpakai</div>
                     </div>
-
-                    <div class="progress-bar-container">
-
-                        <div class="${progressBarClass}" style="width: ${progressBarWidth}%;"></div>
-
-                    </div>
-
-                    <div class="progress-text">${percentageSpent.toFixed(1)}% Terpakai</div>
-
                 `;
-
-
-
-                categoryListDiv.appendChild(categoryCard);
-
+                categoryListDiv.innerHTML += categoryCard;
             });
-
-
 
             // Add event listeners to newly rendered category cards
-
             document.querySelectorAll('.category-card').forEach(card => {
-
                 card.addEventListener('click', function() {
-
                     const categoryName = this.dataset.categoryName;
-
                     displayCategoryDetails(categoryName);
 
-
-
                     // Remove 'selected' class from all cards
-
                     document.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
-
                     // Add 'selected' class to the clicked card
-
                     this.classList.add('selected');
-
                 });
-
             });
-
         }
-
-
 
         function displayCategoryDetails(categoryName) {
-
             const selectedCategory = budgetCategories.find(cat => cat.name === categoryName);
-
             const budgetDetailsSection = document.getElementById('budgetDetailsSection');
 
-
-
             if (!selectedCategory) {
-
                 budgetDetailsSection.style.display = 'none';
-
                 return;
-
             }
-
-
 
             // Show the details section
-
             budgetDetailsSection.style.display = 'flex';
 
-
-
             // Update text content
-
             document.getElementById('detailCategoryName').textContent = selectedCategory.name;
-
             document.getElementById('detailBudgetAmount').textContent = `Rp ${formatNumber(selectedCategory.budget)}`;
-
             document.getElementById('detailSpentAmount').textContent = `Rp ${formatNumber(selectedCategory.spent)}`;
-
-           
-
+            
             const remaining = selectedCategory.budget - selectedCategory.spent;
-
             document.getElementById('detailRemainingAmount').textContent = `Rp ${formatNumber(remaining)}`;
 
+            const percentageSpent = (selectedCategory.spent / selectedCategory.budget) * 100;
+            document.getElementById('chartPercentage').textContent = `${percentageSpent.toFixed(1)}%`;
 
-
+            // Update status
             const statusElement = document.getElementById('detailStatus');
-
             if (remaining >= 0) {
-
                 statusElement.textContent = 'Dalam Anggaran';
-
                 statusElement.style.color = '#4CAF50'; // Green
-
             } else {
-
                 statusElement.textContent = 'Melebihi Anggaran';
-
                 statusElement.style.color = '#F44336'; // Red
-
             }
 
+            // Render/update the pie chart
+            renderPieChart(selectedCategory);
         }
 
+        function renderPieChart(categoryData) {
+            const ctx = document.getElementById('categoryPieChart').getContext('2d');
 
+            // Destroy existing chart instance if it exists
+            if (categoryPieChartInstance) {
+                categoryPieChartInstance.destroy();
+            }
+
+            const spentPercentage = (categoryData.spent / categoryData.budget) * 100;
+            const remainingPercentage = 100 - spentPercentage;
+
+            // Adjust colors based on whether budget is exceeded
+            let spentColor = '#A55D35'; // Default spent color
+            if (spentPercentage > 100) {
+                spentColor = '#F44336'; // Red if exceeded
+            }
+
+            categoryPieChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Terpakai', 'Sisa'],
+                    datasets: [{
+                        data: [spentPercentage, Math.max(0, remainingPercentage)], // Ensure remaining is not negative for chart
+                        backgroundColor: [
+                            spentColor,
+                            '#E2E8F0'  // Remaining color (light gray)
+                        ],
+                        borderWidth: 0,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '80%', // Make it a doughnut chart
+                    plugins: {
+                        legend: {
+                            display: false // Hide legend as percentage is in center
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.raw.toFixed(1) + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
         function formatNumber(num) {
-
             return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
         }
 
-
-
         // Custom message box function (instead of alert)
-
         function showMessageBox(message, type) {
-
             const messageBox = document.createElement('div');
-
             messageBox.classList.add('message-box');
-
             messageBox.textContent = message;
 
-
-
             // Basic styling for the message box
-
             messageBox.style.position = 'fixed';
-
             messageBox.style.top = '20px';
-
             messageBox.style.left = '50%';
-
             messageBox.style.transform = 'translateX(-50%)';
-
             messageBox.style.padding = '15px 30px';
-
             messageBox.style.borderRadius = '8px';
-
             messageBox.style.zIndex = '10000';
-
             messageBox.style.color = 'white';
-
             messageBox.style.fontWeight = 'bold';
-
             messageBox.style.boxShadow = '0 4px 10px rgba(0,0,0,0.2)';
-
             messageBox.style.opacity = '0';
-
             messageBox.style.transition = 'opacity 0.5s ease-in-out';
 
-
-
             if (type === 'success') {
-
                 messageBox.style.backgroundColor = '#4CAF50';
-
             } else if (type === 'error') {
-
                 messageBox.style.backgroundColor = '#F44336';
-
             } else {
-
                 messageBox.style.backgroundColor = '#091F46';
-
             }
-
-
 
             document.body.appendChild(messageBox);
 
-
-
             // Animate in
-
             setTimeout(() => {
-
                 messageBox.style.opacity = '1';
-
             }, 100);
 
-
-
             // Animate out and remove
-
             setTimeout(() => {
-
                 messageBox.style.opacity = '0';
-
                 messageBox.addEventListener('transitionend', () => messageBox.remove());
-
             }, 3000);
-
         }
-
     </script>
-
 </body>
-
 </html>
